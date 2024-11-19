@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('job_title');
             $table->enum('class', ["White Collars", "Blue Collars"])->default('White Collars');
             $table->string('national_id');
-            $table->string('employee_no');
+            $table->integer('employee_no')->unique();
             $table->foreignIdFor(Employee::class, 'report_to')->nullable();
             $table->foreignIdFor(Location::class);
             $table->foreignIdFor(Sector::class);

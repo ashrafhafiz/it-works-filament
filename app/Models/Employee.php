@@ -11,6 +11,8 @@ class Employee extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'employee_no';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -43,6 +45,7 @@ class Employee extends Model
         'location_id' => 'integer',
         'sector_id' => 'integer',
         'department_id' => 'integer',
+        'employee_no' => 'integer',
     ];
 
     public function location(): BelongsTo
@@ -69,11 +72,16 @@ class Employee extends Model
     // Get direct reports (subordinates)
     public function directReports(): HasMany
     {
-        return $this->hasMany(Employee::class, 'reports_to');
+        return $this->hasMany(Employee::class, 'report_to');
     }
 
     public function mobiles(): HasMany
     {
-        return $this->hasMany(Mobile::class);
+        return $this->hasMany(Mobile::class, 'employee_no');
+    }
+
+    public function devices(): HasMany
+    {
+        return $this->hasMany(Device::class, 'employee_no');
     }
 }

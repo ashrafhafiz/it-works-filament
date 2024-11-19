@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\DeviceType;
+use App\Models\Employee;
+use App\Models\Manufacturer;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -26,10 +29,10 @@ return new class extends Migration
             $table->string('wireless');
             $table->string('display');
             $table->date('shipping_date');
-            $table->enum('status', ["active","ready","reserved","retired","repair"]);
-            $table->foreignId('employee_id');
-            $table->foreignId('manufacturer_id');
-            $table->foreignId('device_type_id');
+            $table->enum('status', ["active", "ready", "reserved", "retired", "repair"]);
+            $table->foreignIdFor(Employee::class, 'employee_no');
+            $table->foreignIdFor(Manufacturer::Class, 'manufacturer_id');
+            $table->foreignIdFor(DeviceType::class, 'device_type_id');
             $table->timestamps();
         });
     }

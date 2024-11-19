@@ -30,7 +30,7 @@ class Device extends Model
         'display',
         'shipping_date',
         'status',
-        'employee_id',
+        'employee_no',
         'manufacturer_id',
         'device_type_id',
     ];
@@ -43,14 +43,14 @@ class Device extends Model
     protected $casts = [
         'id' => 'integer',
         'shipping_date' => 'date',
-        'employee_id' => 'integer',
+        'employee_no' => 'integer',
         'manufacturer_id' => 'integer',
         'device_type_id' => 'integer',
     ];
 
     public function employee(): BelongsTo
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(Employee::class, 'employee_no');
     }
 
     public function manufacturer(): BelongsTo

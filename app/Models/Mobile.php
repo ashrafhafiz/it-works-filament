@@ -16,7 +16,7 @@ class Mobile extends Model
      * @var array
      */
     protected $fillable = [
-        'employee_id',
+        'employee_no',
         'mobile_no',
         'rate_plan',
         'bouquet_value',
@@ -29,11 +29,11 @@ class Mobile extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'employee_id' => 'integer',
+        'employee_no' => 'integer',
     ];
 
     public function employee(): BelongsTo
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(Employee::class, 'employee_no');
     }
 }

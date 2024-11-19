@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             MobileSeeder::class,
             ManufacturerSeeder::class,
             DeviceTypeSeeder::class,
+            DeviceSeeder::class,
         ]);
     }
 }

@@ -52,7 +52,7 @@ class DeviceSeeder extends Seeder
                 'display' => $record['display'],
                 'shipping_date' => Carbon::today(),
                 'status' => $record['status'],
-                'employee_id' => $record['employee_id'],
+                'employee_no' => $record['employee_no'],
                 'manufacturer_id' => $manufacturer_id,
                 'device_type_id' => $device_type_id,
             ]);

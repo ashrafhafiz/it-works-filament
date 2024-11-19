@@ -36,7 +36,7 @@ class MobileSeeder extends Seeder
             $employee_id = Employee::where('name_ar', $record['name_ar'])->get()->first()->id;
 
             Mobile::create([
-                'employee_id' => $employee_id,
+                'employee_no' => $employee_id,
                 'mobile_no' => $record['mobile_no'],
             ]);
         }
