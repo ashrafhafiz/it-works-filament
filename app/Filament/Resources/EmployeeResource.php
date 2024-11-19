@@ -31,8 +31,12 @@ class EmployeeResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name_ar')
+                    ->hint('This is hint!')
+                    ->label('Name (عربي)')
                     ->required(),
-                Forms\Components\TextInput::make('name_en'),
+                Forms\Components\TextInput::make('name_en')
+                    ->label('Name (en)')
+                    ->markAsRequired(true),
                 Forms\Components\TextInput::make('email')
                     ->email(),
                 Forms\Components\Select::make('status')
@@ -88,8 +92,8 @@ class EmployeeResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('employee_no')
                     ->required(),
-                Forms\Components\TextInput::make('report_to')
-                    ->numeric(),
+                Forms\Components\Select::make('report_to')
+                    ->relationship('manager', 'name_ar'),
                 Forms\Components\Select::make('location_id')
                     ->relationship('location', 'name')
                     ->required(),
@@ -106,8 +110,10 @@ class EmployeeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name_ar')
+                    ->label('Name (ar)')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name_en')
+                    ->label('Name (en)')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),

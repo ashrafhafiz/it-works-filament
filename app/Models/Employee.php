@@ -63,7 +63,7 @@ class Employee extends Model
     // Get the supervisor/manager
     public function manager(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'reports_to');
+        return $this->belongsTo(Employee::class, 'report_to');
     }
 
     // Get direct reports (subordinates)
