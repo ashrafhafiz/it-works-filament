@@ -1,0 +1,23 @@
+models:
+  DeviceTransaction:
+    transaction_type: enum:"assign","return"
+    transaction_date: timestamp
+    reason: enum:"New Assignment", "Transfer", "Return"
+    relationships:
+      belongsTo: Employee, Device
+# seeders: Mobile, Manufacturer, DeviceType, Device
+
+# controllers:
+#   Post:
+#     index:
+#       query: all
+#       render: post.index with:posts
+
+#     store:
+#       validate: title, content
+#       save: post
+#       send: ReviewNotification to:post.author with:post
+#       dispatch: SyncMedia with:post
+#       fire: NewPost with:post
+#       flash: post.title
+#       redirect: post.index

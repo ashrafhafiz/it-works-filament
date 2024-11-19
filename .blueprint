@@ -1,0 +1,26 @@
+created:
+    - database/factories/MobileFactory.php
+    - database/factories/ManufacturerFactory.php
+    - database/factories/DeviceTypeFactory.php
+    - database/factories/DeviceFactory.php
+    - database/migrations/2024_11_06_125102_create_mobiles_table.php
+    - database/migrations/2024_11_06_125103_create_manufacturers_table.php
+    - database/migrations/2024_11_06_125104_create_device_types_table.php
+    - database/migrations/2024_11_06_125105_create_devices_table.php
+    - app/Models/Mobile.php
+    - app/Models/Manufacturer.php
+    - app/Models/DeviceType.php
+    - app/Models/Device.php
+    - database/seeders/MobileSeeder.php
+    - database/seeders/ManufacturerSeeder.php
+    - database/seeders/DeviceTypeSeeder.php
+    - database/seeders/DeviceSeeder.php
+models:
+    Location: { name: string, address: string, city: string, postal_code: 'nullable string', country: string, relationships: { hasMany: 'Sector, Sector:&Department, Employee' } }
+    Sector: { name: string, relationships: { hasMany: Department, belongsToMany: Location } }
+    Department: { name: string, relationships: { belongsTo: Sector } }
+    Employee: { name: string, email: 'string unique', company: "string default('Giza Cable Industries')", job_title: string, class: 'enum:"White Collars","Blue Collars"', national_id: string, employee_no: string, report_to: id, relationships: { belongsTo: 'Location, Sector, Department' } }
+    Mobile: { mobile_no: string, rate_plan: string, bouquet_value: integer, relationships: { belongsTo: Employee } }
+    Manufacturer: { name: string }
+    DeviceType: { type: string }
+    Device: { model: string, service_tag: string, processor_type: string, memory_size: string, storage1_size: string, storage2_size: string, graphics_1: string, graphics_2: string, sound: string, ethernet: string, wireless: string, display: string, shipping_date: date, status: 'enum:"active","ready","reserved","retired","repair"', relationships: { belongsTo: 'Employee, Manufacturer, DeviceType' } }

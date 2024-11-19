@@ -1,0 +1,47 @@
+models:
+  Mobile:
+    mobile_no: string
+    rate_plan: string
+    bouquet_value: integer
+    relationships:
+      belongsTo: Employee
+
+  Manufacturer:
+    name: string
+
+  DeviceType:
+    type: string
+
+  Device:
+    model: string
+    service_tag: string
+    processor_type: string
+    memory_size: string
+    storage1_size: string
+    storage2_size: string
+    graphics_1: string
+    graphics_2: string
+    sound: string
+    ethernet: string
+    wireless: string
+    display: string
+    shipping_date: date
+    status: enum:"active","ready","reserved","retired","repair"
+    relationships:
+      belongsTo: Employee, Manufacturer, DeviceType
+
+seeders: Mobile, Manufacturer, DeviceType, Device
+# controllers:
+#   Post:
+#     index:
+#       query: all
+#       render: post.index with:posts
+
+#     store:
+#       validate: title, content
+#       save: post
+#       send: ReviewNotification to:post.author with:post
+#       dispatch: SyncMedia with:post
+#       fire: NewPost with:post
+#       flash: post.title
+#       redirect: post.index
