@@ -50,8 +50,8 @@ class MobileResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('mobile_no')
                     ->formatStateUsing(fn($state) => '0' . $state)
-                    ->extraAttributes(['class' => 'font-mono bg-gray-100 text-red-700'])
-                    ->color('danger')
+                    ->extraAttributes(['class' => 'font-mono text-lg text-red-700'])
+                    // ->color('danger')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('rate_plan')
                     ->searchable(),

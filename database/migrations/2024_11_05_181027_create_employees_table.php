@@ -24,7 +24,7 @@ return new class extends Migration
             $table->enum('status', ["active", "inactive", "terminated"])->default('active');
             $table->string('company')->default('Giza Cable Industries');
             $table->string('job_title');
-            $table->enum('class', ["White Collars", "Blue Collars"])->default('White Collars');
+            $table->enum('class', ["White Collars", "Blue Collars"])->nullable();
             $table->string('national_id');
             $table->integer('employee_no')->unique();
             // $table->integer('employee_no');
