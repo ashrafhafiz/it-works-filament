@@ -39,13 +39,13 @@ class LocationSeeder extends Seeder
         ];
 
         // Use the following instead for mysql
-        // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         //
         // for SQL: as in https://github.com/laravel/framework/issues/35401
         // DB::table('locations')->delete();
         //
         // Use the following instead for sqlite
-        DB::statement('PRAGMA foreign_keys = OFF;');
+        // DB::statement('PRAGMA foreign_keys = OFF;');
         DB::table('locations')->truncate();
 
         foreach ($locations as $location) {
@@ -53,10 +53,10 @@ class LocationSeeder extends Seeder
         }
 
         // Use the following instead for mysql
-        // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         //
         // Use the following instead for sqlite
-        DB::statement('PRAGMA foreign_keys = ON;');
+        // DB::statement('PRAGMA foreign_keys = ON;');
 
         // Location::factory()->count(5)->create();
     }

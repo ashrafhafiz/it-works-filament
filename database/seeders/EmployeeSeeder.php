@@ -24,13 +24,13 @@ class EmployeeSeeder extends Seeder
         $records = $csv->getRecords();
 
         // Use the following instead for mysql
-        // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         //
         // for SQL: as in https://github.com/laravel/framework/issues/35401
         // DB::table('employees')->delete();
         //
         // Use the following instead for sqlite
-        DB::statement('PRAGMA foreign_keys = OFF;');
+        // DB::statement('PRAGMA foreign_keys = OFF;');
         DB::table('employees')->truncate();
 
         foreach ($records as $record) {
@@ -48,7 +48,8 @@ class EmployeeSeeder extends Seeder
                 'class' => $record['class'],
                 'national_id' => $record['national_id'],
                 'employee_no' => $record['employee_no'],
-                'report_to' => $record['report_to'],
+                // 'report_to' => $record['report_to'],
+                'report_to' => 0,
                 'location_id' => $location_id,
                 'sector_id' => $sector_id,
                 'department_id' => $department_id,
@@ -56,10 +57,10 @@ class EmployeeSeeder extends Seeder
         }
 
         // Use the following instead for mysql
-        // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         //
         // Use the following instead for sqlite
-        DB::statement('PRAGMA foreign_keys = ON;');
+        // DB::statement('PRAGMA foreign_keys = ON;');
         // Employee::factory()->count(5)->create();
     }
 }

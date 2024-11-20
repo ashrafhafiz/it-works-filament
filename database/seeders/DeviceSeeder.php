@@ -24,13 +24,13 @@ class DeviceSeeder extends Seeder
         $records = $csv->getRecords();
 
         // Use the following instead for mysql
-        // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         //
         // for SQL: as in https://github.com/laravel/framework/issues/35401
         // DB::table('devices')->delete();
         //
         // Use the following instead for sqlite
-        DB::statement('PRAGMA foreign_keys = OFF;');
+        // DB::statement('PRAGMA foreign_keys = OFF;');
         DB::table('devices')->truncate();
 
         foreach ($records as $record) {
@@ -59,10 +59,10 @@ class DeviceSeeder extends Seeder
         }
 
         // Use the following instead for mysql
-        // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         //
         // Use the following instead for sqlite
-        DB::statement('PRAGMA foreign_keys = ON;');
+        // DB::statement('PRAGMA foreign_keys = ON;');
         // Device::factory()->count(5)->create();
     }
 }

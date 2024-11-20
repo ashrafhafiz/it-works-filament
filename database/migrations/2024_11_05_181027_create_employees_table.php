@@ -17,6 +17,7 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
+            // $table->integer('id');
             $table->string('name_ar')->unique();
             $table->string('name_en')->nullable();
             $table->string('email')->nullable();
@@ -26,6 +27,8 @@ return new class extends Migration
             $table->enum('class', ["White Collars", "Blue Collars"])->default('White Collars');
             $table->string('national_id');
             $table->integer('employee_no')->unique();
+            // $table->integer('employee_no');
+            // $table->primary(['id', 'employee_no']);
             $table->foreignIdFor(Employee::class, 'report_to')->nullable();
             $table->foreignIdFor(Location::class);
             $table->foreignIdFor(Sector::class);

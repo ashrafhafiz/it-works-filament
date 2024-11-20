@@ -16,13 +16,13 @@ class DeviceTypeSeeder extends Seeder
         $types = ["Laptop", "Desktop", "Printer", "Scanner", "Photocopier", "Server", "Storage"];
 
         // Use the following instead for mysql
-        // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         //
         // for SQL: as in https://github.com/laravel/framework/issues/35401
         // DB::table('device_types')->delete();
         //
         // Use the following instead for sqlite
-        DB::statement('PRAGMA foreign_keys = OFF;');
+        // DB::statement('PRAGMA foreign_keys = OFF;');
         DB::table('device_types')->truncate();
 
         foreach ($types as $type) {
@@ -32,10 +32,10 @@ class DeviceTypeSeeder extends Seeder
         }
 
         // Use the following instead for mysql
-        // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         //
         // Use the following instead for sqlite
-        DB::statement('PRAGMA foreign_keys = ON;');
+        // DB::statement('PRAGMA foreign_keys = ON;');
         // DeviceType::factory()->count(5)->create();
     }
 }

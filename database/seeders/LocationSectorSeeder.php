@@ -21,13 +21,13 @@ class LocationSectorSeeder extends Seeder
             'MV/HV Factory' => ['Business Excellence', 'Commercial', 'Operations'],
         ];
         // Use the following instead for mysql
-        // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         //
         // for SQL: as in https://github.com/laravel/framework/issues/35401
         // DB::table('location_sector')->delete();
         //
         // Use the following instead for sqlite
-        DB::statement('PRAGMA foreign_keys = OFF;');
+        // DB::statement('PRAGMA foreign_keys = OFF;');
         DB::table('location_sector')->truncate();
 
         foreach ($data as $location => $sectors) {
@@ -40,9 +40,9 @@ class LocationSectorSeeder extends Seeder
         }
 
         // Use the following instead for mysql
-        // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         //
         // Use the following instead for sqlite
-        DB::statement('PRAGMA foreign_keys = ON;');
+        // DB::statement('PRAGMA foreign_keys = ON;');
     }
 }
