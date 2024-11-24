@@ -18,12 +18,27 @@ class LocationResource extends Resource
     protected static ?string $model = Location::class;
 
     // Optional: Assign to a group
-    protected static ?string $navigationGroup = 'Admin Management';
+    protected static ?string $navigationGroup = 'System Management';
 
     // Optional: Sort within the group
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-c-building-office';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'primary';
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'The number of locations';
+    }
 
     public static function form(Form $form): Form
     {

@@ -18,12 +18,27 @@ class DepartmentResource extends Resource
     protected static ?string $model = Department::class;
 
     // Optional: Assign to a group
-    protected static ?string $navigationGroup = 'Admin Management';
+    protected static ?string $navigationGroup = 'System Management';
 
     // Optional: Sort within the group
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'primary';
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'The number of departments';
+    }
 
     public static function form(Form $form): Form
     {

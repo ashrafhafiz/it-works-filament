@@ -18,12 +18,27 @@ class DeviceTypeResource extends Resource
     protected static ?string $model = DeviceType::class;
 
     // Optional: Assign to a group
-    protected static ?string $navigationGroup = 'Device Management';
+    protected static ?string $navigationGroup = 'System Management';
 
     // Optional: Sort within the group
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 5;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-numbered-list';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'primary';
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'The number of device types';
+    }
 
     public static function form(Form $form): Form
     {

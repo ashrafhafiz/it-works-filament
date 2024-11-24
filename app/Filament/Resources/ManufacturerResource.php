@@ -18,12 +18,27 @@ class ManufacturerResource extends Resource
     protected static ?string $model = Manufacturer::class;
 
     // Optional: Assign to a group
-    protected static ?string $navigationGroup = 'Device Management';
+    protected static ?string $navigationGroup = 'System Management';
 
     // Optional: Sort within the group
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 4;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-cpu-chip';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'primary';
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'The number of manufacturers';
+    }
 
     public static function form(Form $form): Form
     {

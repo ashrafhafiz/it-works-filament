@@ -21,9 +21,9 @@ class DeviceResource extends Resource
     protected static ?string $navigationGroup = 'Device Management';
 
     // Optional: Sort within the group
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-computer-desktop';
 
     public static function form(Form $form): Form
     {
