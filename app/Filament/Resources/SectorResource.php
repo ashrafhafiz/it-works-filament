@@ -55,6 +55,34 @@ class SectorResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('departments.name')
+                    ->badge()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('locations.name')
+                    ->badge()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('employees_count')
+                    ->label('Active Employees Count')
+                    // the following is not working
+                    // ->counts(
+                    //     'employees',
+                    //     fn(Builder $query) => $query->where('status', 'active')
+                    // )
+                    // the following is not working also
+                    // ->counts(
+                    //     'employees',
+                    //     fn(Builder $query) => $query->active()
+                    // )
+                    // The following is working
+                    // ->getStateUsing(function ($record) {
+                    //     return $record->employees()->where('status', 'active')->count();
+                    // })
+                    // using a scoped method in the model class
+                    ->getStateUsing(function ($record) {
+                        return $record->employees()->active()->count();
+                    })
+                    ->badge()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

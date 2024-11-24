@@ -84,18 +84,23 @@ class AppPanelProvider extends PanelProvider
                     ->icon('heroicon-o-presentation-chart-line')
                     ->group('External Links')
                     ->sort(3),
+                NavigationItem::make('Endpoint Central')
+                    ->url('http://hqvs21opman.gc.local:8020/', shouldOpenInNewTab: true)
+                    ->icon('heroicon-o-presentation-chart-line')
+                    ->group('External Links')
+                    ->sort(3),
                 NavigationItem::make('AD Manager')
-                    ->url('https://admanager.gc.local', shouldOpenInNewTab: true)
+                    ->url('http://admanager.gc.local:8080/', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-presentation-chart-line')
                     ->group('External Links')
                     ->sort(4),
                 NavigationItem::make('AD Audit')
-                    ->url('https://adaudit.gc.local', shouldOpenInNewTab: true)
+                    ->url('http://adaudit.gc.local:8081/', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-presentation-chart-line')
                     ->group('External Links')
                     ->sort(5),
                 NavigationItem::make('Operations manager')
-                    ->url('https://opmanager.gc.local', shouldOpenInNewTab: true)
+                    ->url('http://hqvs21opman.gc.local:8060/', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-presentation-chart-line')
                     ->group('External Links')
                     ->sort(6),

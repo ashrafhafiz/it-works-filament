@@ -2,16 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DepartmentResource\Pages;
-use App\Filament\Resources\DepartmentResource\RelationManagers;
-use App\Models\Department;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Sector;
+use App\Models\Location;
+use Filament\Forms\Form;
+use App\Models\Department;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\DepartmentResource\Pages;
+use App\Filament\Resources\DepartmentResource\RelationManagers;
 
 class DepartmentResource extends Resource
 {
@@ -57,9 +59,11 @@ class DepartmentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('sector.name')
-                    ->numeric()
+                    ->badge()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -71,7 +75,26 @@ class DepartmentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('status')
+                    ->form([
+                        Forms\Components\Select::make('sector')
+                            ->label('Filter by Sector')
+                            ->placeholder('Select a sector')
+                            ->options(fn() => Sector::all()->pluck('name', 'id')->toArray()),
+                        // Forms\Components\Select::make('location')
+                        //     ->label('Filter by Location')
+                        //     ->placeholder('Select a location')
+                        //     ->options(fn() => Location::all()->pluck('name', 'id')->toArray()),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['sector'], function ($query) use ($data) {
+                                return $query->where('sector_id', $data['sector']);
+                            });
+                        // ->when($data['location'], function ($query) use ($data) {
+                        //     return $query->where('location_id', $data['location']);
+                        // });
+                    })
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

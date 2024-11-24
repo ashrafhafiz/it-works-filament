@@ -2,17 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EmployeeResource\Pages;
-use App\Filament\Resources\EmployeeResource\RelationManagers;
-use App\Models\Employee;
 use Filament\Forms;
+use Filament\Tables;
+use App\Models\Sector;
+use Filament\Forms\Get;
+use App\Models\Employee;
+use App\Models\Location;
 use Filament\Forms\Form;
+use App\Models\Department;
+use Filament\Tables\Table;
+use App\Exports\EmployeesExport;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
-use Filament\Tables;
-use Filament\Tables\Table;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use App\Filament\Resources\EmployeeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\EmployeeResource\RelationManagers;
+
+use function PHPUnit\Framework\isEmpty;
 
 class EmployeeResource extends Resource
 {
@@ -93,15 +102,24 @@ class EmployeeResource extends Resource
                 Forms\Components\TextInput::make('employee_no')
                     ->required(),
                 Forms\Components\Select::make('report_to')
-                    ->relationship('manager', 'name_ar'),
+                    ->relationship('manager', 'name_ar')
+                    ->searchable(),
                 Forms\Components\Select::make('location_id')
                     ->relationship('location', 'name')
                     ->required(),
                 Forms\Components\Select::make('sector_id')
+                    ->live()
                     ->relationship('sector', 'name')
                     ->required(),
                 Forms\Components\Select::make('department_id')
-                    ->relationship('department', 'name'),
+                    // ->relationship('department', 'name'),
+                    ->options(function (Get $get) {
+                        $sectorId = $get('sector_id');
+                        if ($sectorId) {
+                            // return Department::where('sector_id', $sectorId)->get()->pluck('name', 'id');
+                            return Department::where('sector_id', $sectorId)->pluck('name', 'id')->toArray();
+                        }
+                    })
             ]);
     }
 
@@ -129,7 +147,7 @@ class EmployeeResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('employee_no')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('report_to')
+                Tables\Columns\TextColumn::make('manager.name_ar')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('location.name')
@@ -151,7 +169,50 @@ class EmployeeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('status')
+                    ->form([
+                        Forms\Components\Select::make('status')
+                            ->label('Filter by Status')
+                            ->placeholder('Select a Status')
+                            ->options([
+                                'Active' => 'active',
+                                'Terminated' => 'terminated'
+                            ]),
+                        Forms\Components\Select::make('location')
+                            ->label('Filter by Location')
+                            ->placeholder('Select a location')
+                            ->options(fn() => Location::all()->pluck('name', 'id')->toArray()),
+                        Forms\Components\Select::make('sector')
+                            ->label('Filter by Sector')
+                            ->placeholder('Select a sector')
+                            ->options(fn() => Sector::all()->pluck('name', 'id')->toArray()),
+                        Forms\Components\Select::make('department')
+                            ->label('Filter by Department')
+                            ->placeholder('Select a department')
+                            ->options(function (Get $get) {
+                                $sectorId = $get('sector');
+                                if ($sectorId) {
+                                    return Department::where('sector_id', $sectorId)->pluck('name', 'id')->toArray();
+                                } else {
+                                    return Department::all()->pluck('name', 'id')->toArray();
+                                }
+                            })
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['status'], function ($query) use ($data) {
+                                return $query->where('status', $data['status']);
+                            })
+                            ->when($data['location'], function ($query) use ($data) {
+                                return $query->where('location_id', $data['location']);
+                            })
+                            ->when($data['sector'], function ($query) use ($data) {
+                                return $query->where('sector_id', $data['sector']);
+                            })
+                            ->when($data['department'], function ($query) use ($data) {
+                                return $query->where('department_id', $data['department']);
+                            });
+                    })
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -159,6 +220,12 @@ class EmployeeResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\BulkAction::make('Export')
+                        ->label('Export to Excel')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(function (Collection $records) {
+                            return Excel::download(new EmployeesExport($records), 'employees.xlsx');
+                        })
                 ]),
             ]);
     }

@@ -48,6 +48,16 @@ class Employee extends Model
         'employee_no' => 'integer',
     ];
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
+    public function scopeTerminated($query)
+    {
+        return $query->where('status', 'terminated');
+    }
+
     public function location(): BelongsTo
     {
         return $this->belongsTo(Location::class);

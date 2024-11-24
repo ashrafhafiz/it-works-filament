@@ -38,4 +38,9 @@ class Sector extends Model
     {
         return $this->belongsToMany(Location::class, 'location_sector', 'sector_id', 'location_id');
     }
+
+    public function employees(): HasMany
+    {
+        return $this->hasMany(Employee::class);
+    }
 }
