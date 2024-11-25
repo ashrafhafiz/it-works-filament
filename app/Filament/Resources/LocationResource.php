@@ -45,7 +45,8 @@ class LocationResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->required(),
+                    ->required()
+                    ->unique(ignoreRecord: true),
                 Forms\Components\TextInput::make('address')
                     ->required(),
                 Forms\Components\TextInput::make('city')

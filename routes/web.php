@@ -18,3 +18,8 @@
 // });
 
 // require __DIR__.'/auth.php';
+
+use App\Http\Controllers\GeneratePdfController;
+
+Route::get('{student}/pdf/generate', [GeneratePdfController::class, 'generateEmployeePdf'])
+    ->name('generate.employee.pdf');

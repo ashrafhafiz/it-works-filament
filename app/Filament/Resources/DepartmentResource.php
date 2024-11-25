@@ -5,11 +5,13 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Sector;
+use Filament\Forms\Get;
 use App\Models\Location;
 use Filament\Forms\Form;
 use App\Models\Department;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Illuminate\Validation\Rules\Unique;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DepartmentResource\Pages;
@@ -46,11 +48,14 @@ class DepartmentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required(),
                 Forms\Components\Select::make('sector_id')
                     ->relationship('sector', 'name')
                     ->required(),
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->unique(ignoreRecord: true, modifyRuleUsing: function (Get $get, Unique $rule): Unique {
+                        return $rule->where('sector_id', $get('sector_id'));
+                    })
             ]);
     }
 

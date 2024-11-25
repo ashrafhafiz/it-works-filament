@@ -45,7 +45,8 @@ class DeviceTypeResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('type')
-                    ->required(),
+                    ->required()
+                    ->unique(ignoreRecord: true),
             ]);
     }
 

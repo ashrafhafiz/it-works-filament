@@ -216,6 +216,9 @@ class EmployeeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('PDF')
+                    ->label('Generate PDF')
+                    ->url(fn(Employee $employee): string => route('generate.employee.pdf', $employee))
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
