@@ -129,6 +129,18 @@ class DeviceResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('PDF')
+                    ->label('PDF')
+                    ->button()
+                    ->color('danger')
+                    ->url(fn(Device $device): string => route('generate.device.pdf', $device)),
+                Tables\Actions\Action::make('QrCode')
+                    ->label('QR Code')
+                    ->button()
+                    ->color('primary')
+                    ->url(function (Device $record) {
+                        return static::getUrl('qrCode', ['record' => $record]);
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -150,6 +162,7 @@ class DeviceResource extends Resource
             'index' => Pages\ListDevices::route('/'),
             'create' => Pages\CreateDevice::route('/create'),
             'edit' => Pages\EditDevice::route('/{record}/edit'),
+            'qrCode' => Pages\GenerateDeviceQrCode::route('/{record}/generateqrcode')
         ];
     }
 }

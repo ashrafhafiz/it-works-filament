@@ -11,6 +11,7 @@ use Filament\Support\Colors\Color;
 use Illuminate\Support\Facades\Blade;
 use Filament\Navigation\NavigationItem;
 use App\Filament\Pages\Auth\EditProfile;
+use App\Filament\Pages\Auth\Login;
 use Filament\Navigation\NavigationGroup;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Support\Facades\FilamentView;
@@ -32,12 +33,15 @@ class AppPanelProvider extends PanelProvider
             ->default()
             ->id('app')
             ->path('/')
-            ->login()
+            ->login(Login::class)
             // ->registration()
             // ->passwordReset()
             // ->emailVerification()
             // ->profile()
-            ->profile(EditProfile::Class)
+            ->profile(EditProfile::class)
+            ->brandName('Filament Demo')
+            ->brandLogo(asset('images/gc3-logo2.png'))
+            ->brandLogoHeight('4rem')
             ->colors([
                 'primary' => Color::Indigo,
                 'gray' => Color::Slate,

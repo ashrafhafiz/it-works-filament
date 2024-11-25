@@ -1,7 +1,7 @@
 <?php
 
 // use App\Http\Controllers\ProfileController;
-// use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -20,6 +20,10 @@
 // require __DIR__.'/auth.php';
 
 use App\Http\Controllers\GeneratePdfController;
+use App\Http\Controllers\GenerateQrCodeController;
 
-Route::get('{student}/pdf/generate', [GeneratePdfController::class, 'generateEmployeePdf'])
+Route::get('employees/{employee}/pdf/generate', [GeneratePdfController::class, 'generateEmployeePdf'])
     ->name('generate.employee.pdf');
+
+Route::get('devices/{device}/pdf/generate', [GeneratePdfController::class, 'generateDevicePdf'])
+    ->name('generate.device.pdf');

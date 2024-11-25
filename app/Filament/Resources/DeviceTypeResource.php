@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DeviceTypeResource\Pages;
-use App\Filament\Resources\DeviceTypeResource\RelationManagers;
-use App\Models\DeviceType;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Device;
+use Filament\Forms\Form;
+use App\Models\DeviceType;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\DeviceTypeResource\Pages;
+use App\Filament\Resources\DeviceTypeResource\RelationManagers;
 
 class DeviceTypeResource extends Resource
 {

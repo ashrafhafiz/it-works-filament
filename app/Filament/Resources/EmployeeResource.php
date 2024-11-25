@@ -218,7 +218,12 @@ class EmployeeResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('PDF')
                     ->label('Generate PDF')
-                    ->url(fn(Employee $employee): string => route('generate.employee.pdf', $employee))
+                    ->url(fn(Employee $employee): string => route('generate.employee.pdf', $employee)),
+                Tables\Actions\Action::make('QrCode')
+                    ->label('QR Code')
+                    ->url(function (Employee $record) {
+                        return static::getUrl('qrCode', ['record' => $record]);
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -246,6 +251,7 @@ class EmployeeResource extends Resource
             'index' => Pages\ListEmployees::route('/'),
             'create' => Pages\CreateEmployee::route('/create'),
             'edit' => Pages\EditEmployee::route('/{record}/edit'),
+            'qrCode' => Pages\GenerateEmployeeQrCode::route('/{record}/generateqrcode')
         ];
     }
 }
