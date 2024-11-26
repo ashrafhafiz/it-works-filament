@@ -46,14 +46,18 @@ class DeviceResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('memory_size')
                     ->required(),
-                Forms\Components\TextInput::make('storage1_size')
+                Forms\Components\TextInput::make('storage_size')
                     ->required(),
-                Forms\Components\TextInput::make('storage2_size')
+                // Forms\Components\TextInput::make('storage1_size')
+                //     ->required(),
+                // Forms\Components\TextInput::make('storage2_size')
+                //     ->required(),
+                Forms\Components\TextInput::make('graphics')
                     ->required(),
-                Forms\Components\TextInput::make('graphics_1')
-                    ->required(),
-                Forms\Components\TextInput::make('graphics_2')
-                    ->required(),
+                // Forms\Components\TextInput::make('graphics_1')
+                //     ->required(),
+                // Forms\Components\TextInput::make('graphics_2')
+                //     ->required(),
                 Forms\Components\TextInput::make('sound')
                     ->required(),
                 Forms\Components\TextInput::make('ethernet')
@@ -88,16 +92,27 @@ class DeviceResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('memory_size')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('storage1_size')
+                Tables\Columns\TextColumn::make('storage_size')
+                    // ->formatStateUsing(function ($state) {
+                    // if (!is_array($state)) return 'N/A';
+                    // return collect($state)
+                    // ->map(fn($spec) => "{$spec['key']}: {$spec['value']}")
+                    // ->implode(', ');
+                    // })
                     ->searchable(),
-                Tables\Columns\TextColumn::make('storage2_size')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('graphics_1')
+                // Tables\Columns\TextColumn::make('storage1_size')
+                //     ->searchable(),
+                // Tables\Columns\TextColumn::make('storage2_size')
+                //     ->searchable(),
+                Tables\Columns\TextColumn::make('graphics')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('graphics_2')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('graphics_1')
+                //     ->searchable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
+                // Tables\Columns\TextColumn::make('graphics_2')
+                //     ->searchable()
+                //     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('sound')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),

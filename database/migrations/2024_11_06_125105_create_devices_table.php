@@ -20,10 +20,12 @@ return new class extends Migration
             $table->string('service_tag');
             $table->string('processor_type');
             $table->string('memory_size');
-            $table->string('storage1_size');
-            $table->string('storage2_size');
-            $table->string('graphics_1');
-            $table->string('graphics_2');
+            $table->json('storage_size');
+            // $table->string('storage1_size');
+            // $table->string('storage2_size');
+            $table->string('graphics');
+            // $table->string('graphics_1');
+            // $table->string('graphics_2');
             $table->string('sound');
             $table->string('ethernet');
             $table->string('wireless');
@@ -31,7 +33,7 @@ return new class extends Migration
             $table->date('shipping_date');
             $table->enum('status', ["active", "ready", "reserved", "retired", "repair"]);
             $table->foreignIdFor(Employee::class, 'employee_no');
-            $table->foreignIdFor(Manufacturer::Class, 'manufacturer_id');
+            $table->foreignIdFor(Manufacturer::class, 'manufacturer_id');
             $table->foreignIdFor(DeviceType::class, 'device_type_id');
             $table->timestamps();
         });

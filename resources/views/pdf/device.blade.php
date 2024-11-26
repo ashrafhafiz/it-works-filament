@@ -93,11 +93,11 @@
                 <div class="space-y-2">
                     <div class="flex">
                         <span class="w-32 font-medium">Primary Storage:</span>
-                        <span>{{ $device->storage1_size }} GB</span>
+                        <span>{{ $device->storage_size[0] }} GB</span>
                     </div>
                     <div class="flex">
                         <span class="w-32 font-medium">Secondary Storage:</span>
-                        <span>{{ $device->storage2_size ?? 'N/A' }} GB</span>
+                        <span>{{ $device->storage_size[1] }} GB</span>
                     </div>
                 </div>
             </div>
@@ -112,18 +112,18 @@
                 <div class="space-y-2">
                     <div class="flex">
                         <span class="w-32 font-medium">Primary Graphics:</span>
-                        <span>{{ $device->graphics_1 }}</span>
+                        <span>{{ $device->graphics }}</span>
                     </div>
-                    <div class="flex">
+                    {{-- <div class="flex">
                         <span class="w-32 font-medium">Secondary Graphics:</span>
                         <span>{{ $device->graphics_2 ?? 'N/A' }}</span>
-                    </div>
-                </div>
-                <div class="space-y-2">
+                    </div> --}}
                     <div class="flex">
                         <span class="w-32 font-medium">Display:</span>
                         <span>{{ $device->display }}</span>
                     </div>
+                </div>
+                <div class="space-y-2">
                     <div class="flex">
                         <span class="w-32 font-medium">Sound:</span>
                         <span>{{ $device->sound }}</span>
