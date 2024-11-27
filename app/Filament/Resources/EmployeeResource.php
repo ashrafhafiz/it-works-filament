@@ -233,7 +233,22 @@ class EmployeeResource extends Resource
                         ->icon('heroicon-o-document-arrow-down')
                         ->action(function (Collection $records) {
                             return Excel::download(new EmployeesExport($records), 'employees.xlsx');
-                        })
+                        }),
+                    Tables\Actions\BulkAction::make('sendBulkSms')
+                        ->label('Send Bulk SMS')
+                        ->icon('heroicon-o-chat-bubble-left-right')
+                        ->deselectRecordsAfterCompletion()
+                        ->modalSubmitActionLabel('Send Message')
+                        ->form([
+                            Forms\Components\Textarea::make('message')
+                                ->placeholder('Enter a message')
+                                ->required()
+                                ->maxLength(255)
+                                ->rows(4),
+                            Forms\Components\Textarea::make('remarks')
+                                ->placeholder('Enter a remarks')
+                                ->maxLength(255),
+                        ])
                 ]),
             ]);
     }

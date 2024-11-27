@@ -39,4 +39,9 @@ class EditUser extends EditRecord
                 ->modalWidth(MaxWidth::ExtraLarge)
         ];
     }
+
+    protected function getSavedNotificationTitle(): string|null
+    {
+        return "The user was updated successfully.";
+    }
 }

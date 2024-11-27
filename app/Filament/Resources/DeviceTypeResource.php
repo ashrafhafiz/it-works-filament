@@ -70,8 +70,8 @@ class DeviceTypeResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()->successNotificationTitle('Device type has been updated successfully'),
+                Tables\Actions\DeleteAction::make()->successNotificationTitle('Device type has been deleted successfully'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

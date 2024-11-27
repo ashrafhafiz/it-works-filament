@@ -67,7 +67,7 @@ class AppPanelProvider extends PanelProvider
                 NavigationGroup::make()
                     ->label('Employee Management'),
                 NavigationGroup::make()
-                    ->label('Filament Shield'),
+                    ->label('Access Control'),
                 NavigationGroup::make()
                     ->label('System Management'),
                 NavigationGroup::make()
@@ -146,6 +146,7 @@ class AppPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->viteTheme('resources/css/app.css')
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
                     ->gridColumns([
