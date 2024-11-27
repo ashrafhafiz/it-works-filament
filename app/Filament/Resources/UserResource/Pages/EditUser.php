@@ -7,6 +7,7 @@ use Filament\Actions;
 use Filament\Support\Enums\MaxWidth;
 use App\Filament\Resources\UserResource;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 
 class EditUser extends EditRecord
@@ -29,6 +30,11 @@ class EditUser extends EditRecord
                 ])
                 ->action(function (array $data) {
                     $this->record->update(['password' => $data['password']]);
+
+                    Notification::make('')
+                        ->title('Password Updated Successfully')
+                        ->success()
+                        ->send();
                 })
                 ->modalWidth(MaxWidth::ExtraLarge)
         ];

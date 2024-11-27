@@ -38,13 +38,15 @@ class UserResource extends Resource
                     ->preload()
                     ->searchable(),
                 Forms\Components\DateTimePicker::make('email_verified_at'),
-                // Forms\Components\TextInput::make('password')
-                //     ->password()
-                //     ->required()
-                //     ->confirmed(),
-                // Forms\Components\TextInput::make('password_confirmation')
-                //     ->password()
-                //     ->required(),
+                Forms\Components\TextInput::make('password')
+                    ->visibleOn('create')
+                    ->password()
+                    ->required()
+                    ->confirmed(),
+                Forms\Components\TextInput::make('password_confirmation')
+                    ->visibleOn('create')
+                    ->password()
+                    ->required(),
             ]);
     }
 
