@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -18,8 +19,10 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ["admin", "technician", "user", "visitor"])->default('visitor');
-            $table->enum('status', ["active", "inactive"])->default('active');
+            $table->boolean('is_active')->default(true);
             $table->timestamp('last_login_timestamp')->nullable();
+            $table->foreignIdFor(User::class, 'created_by')->nullable();
+            $table->foreignIdFor(User::class, 'updated_by')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

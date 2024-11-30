@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Location;
 use App\Models\Sector;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Location;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class LocationSectorSeeder extends Seeder
 {
@@ -35,6 +35,8 @@ class LocationSectorSeeder extends Seeder
                 DB::table('location_sector')->insert([
                     'location_id' => Location::where('name', $location)->get()->first()->id,
                     'sector_id' => Sector::where('name', $sector)->get()->first()->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ]);
             }
         }

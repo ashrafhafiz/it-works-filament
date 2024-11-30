@@ -47,6 +47,12 @@ class SectorResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->unique(ignoreRecord: true),
+                Forms\Components\Select::make('locations')
+                    ->relationship('locations', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable()
+                    ->visibleOn('create'),
             ]);
     }
 
@@ -109,7 +115,7 @@ class SectorResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\LocationsRelationManager::class
         ];
     }
 

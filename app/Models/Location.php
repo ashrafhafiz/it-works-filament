@@ -39,7 +39,7 @@ class Location extends Model
 
     public function sectors(): BelongsToMany
     {
-        return $this->belongsToMany(Sector::class, 'location_sector', 'location_id', 'sector_id');
+        return $this->belongsToMany(Sector::class, 'location_sector', 'location_id', 'sector_id')->withTimestamps();
     }
 
     public function departments(): HasManyThrough

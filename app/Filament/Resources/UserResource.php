@@ -77,15 +77,33 @@ class UserResource extends Resource
                 //         'inactive' => 'heroicon-o-x-circle',
                 //         default => 'heroicon-o-question-mark-circle'
                 //     }),
-                Tables\Columns\SelectColumn::make('status')
-                    ->options([
-                        'active' => 'active',
-                        'inactive' => 'inactive',
-                    ])
-                    ->rules(['required'])
-                    ->searchable(),
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->onColor(fn($record) => $record->is_active ? 'success' : 'danger')
+                    ->afterStateUpdated(function ($record, $state) {
+                        // Notify about attempted status change
+                        Notification::make()
+                            ->title('Status Updated Successfully')
+                            ->success()
+                            ->send();
+                    })
+                    ->sortable(),
+                // Tables\Columns\SelecteColumn::make('active')
+                // ->options([
+                //     'active' => 'active',
+                //     'inactive' => 'inactive',
+                // ])
+                // ->rules(['required'])
+                // ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('created_by.name')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_by.name')
+                    ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
@@ -107,16 +125,25 @@ class UserResource extends Resource
             //     if ($record->status === 'active') return false;
             //     if ($record->status === 'inactive') return true;
             // })
-            ->recordClasses(fn(User $record) => match ($record->status) {
-                'active' => 'border-s-2 bg-green-100 dark:bg-green-300',
-                'inactive' => 'border-s-2 bg-red-100 dark:bg-red-300',
-                default => null,
+            //
+            // ->recordClasses(fn(User $record) => match ($record->status) {
+            //     'active' => 'border-s-2 bg-green-100 dark:bg-green-300',
+            //     'inactive' => 'border-s-2 bg-red-100 dark:bg-red-300',
+            //     default => null,
+            // })
+            ->recordClasses(function (User $record) {
+                if ($record->is_active) {
+                    return 'border-s-2 bg-green-100 dark:bg-green-300';
+                } else {
+                    return 'border-s-2 bg-red-100 dark:bg-red-300';
+                }
             })
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->color('success'),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\Action::make('resetPassword')
                     ->form([
