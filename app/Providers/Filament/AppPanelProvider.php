@@ -7,14 +7,16 @@ use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Navigation\MenuItem;
+use App\Filament\Pages\Auth\Login;
 use Filament\Support\Colors\Color;
 use Illuminate\Support\Facades\Blade;
 use Filament\Navigation\NavigationItem;
 use App\Filament\Pages\Auth\EditProfile;
-use App\Filament\Pages\Auth\Login;
 use Filament\Navigation\NavigationGroup;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Support\Facades\FilamentView;
+use Filament\FontProviders\LocalFontProvider;
+use Filament\FontProviders\GoogleFontProvider;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Routing\Middleware\SubstituteBindings;
@@ -42,10 +44,20 @@ class AppPanelProvider extends PanelProvider
             ->brandName('Filament Demo')
             ->brandLogo(asset('images/gc3-logo2.png'))
             ->brandLogoHeight('4rem')
+            // ->colors([
+            //     'primary' => Color::Indigo,
+            //     'gray' => Color::Slate,
+            // ])
             ->colors([
-                'primary' => Color::Indigo,
+                'danger' => Color::Rose,
                 'gray' => Color::Slate,
+                'info' => Color::Blue,
+                'primary' => Color::Indigo,
+                'success' => Color::Emerald,
+                'warning' => Color::Orange,
             ])
+            ->font('Montserrat')
+            ->databaseNotifications()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

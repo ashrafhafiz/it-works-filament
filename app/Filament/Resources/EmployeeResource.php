@@ -14,14 +14,16 @@ use Filament\Tables\Table;
 use App\Exports\EmployeesExport;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
+use App\Services\TextMessageService;
 use Maatwebsite\Excel\Facades\Excel;
+use function PHPUnit\Framework\isEmpty;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+
 use App\Filament\Resources\EmployeeResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
-
-use function PHPUnit\Framework\isEmpty;
 
 class EmployeeResource extends Resource
 {
@@ -227,13 +229,16 @@ class EmployeeResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+
                     Tables\Actions\DeleteBulkAction::make(),
+
                     Tables\Actions\BulkAction::make('Export')
                         ->label('Export to Excel')
                         ->icon('heroicon-o-document-arrow-down')
                         ->action(function (Collection $records) {
                             return Excel::download(new EmployeesExport($records), 'employees.xlsx');
                         }),
+
                     Tables\Actions\BulkAction::make('sendBulkSms')
                         ->label('Send Bulk SMS')
                         ->icon('heroicon-o-chat-bubble-left-right')
@@ -248,7 +253,14 @@ class EmployeeResource extends Resource
                             Forms\Components\Textarea::make('remarks')
                                 ->placeholder('Enter a remarks')
                                 ->maxLength(255),
-                        ])
+                        ])->action(function (Collection $records, array $data) {
+                            TextMessageService::sendBulkSms($records, $data);
+
+                            Notification::make('')
+                                ->title('Messages Sent Successfully')
+                                ->success()
+                                ->send();
+                        })
                 ]),
             ]);
     }

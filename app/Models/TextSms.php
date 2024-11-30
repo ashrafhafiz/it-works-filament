@@ -23,11 +23,11 @@ class TextSms extends Model
 
     public function sentTo()
     {
-        return $this->belongsTo(Employee::class, 'sent_to');
+        return $this->belongsTo(Employee::class, 'sent_to', 'employee_no');
     }
 
     public function sentFrom()
     {
-        return $this->belongsTo(User::class, 'sent_from');
+        return $this->belongsTo(User::class, 'sent_from', 'id');
     }
 }

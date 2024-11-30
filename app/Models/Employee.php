@@ -2,14 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Filament\Panel;
+use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Employee extends Model
+
+class Employee extends Authenticatable implements HasName
 {
     use HasFactory;
+
+    protected $guard = 'employee';
 
     protected $primaryKey = 'employee_no';
 
@@ -22,6 +29,7 @@ class Employee extends Model
         'name_ar',
         'name_en',
         'email',
+        'password',
         'status',
         'company',
         'job_title',
@@ -32,6 +40,7 @@ class Employee extends Model
         'location_id',
         'sector_id',
         'department_id',
+        'last_login_timestamp'
     ];
 
     /**
@@ -46,7 +55,20 @@ class Employee extends Model
         'sector_id' => 'integer',
         'department_id' => 'integer',
         'employee_no' => 'integer',
+        'last_login_timestamp' => 'datetime',
+        'password' => 'hashed',
     ];
+
+    // public function canAccessPanel(Panel $panel): bool
+    // {
+    //     // return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
+    //     return str_ends_with($this->email, '@example.com') && $this->hasVerifiedEmail();
+    // }
+
+    public function getFilamentName(): string
+    {
+        return $this->name_en;
+    }
 
     public function scopeActive($query)
     {

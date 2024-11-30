@@ -2,13 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Department;
+use App\Models\Sector;
+use League\Csv\Reader;
 use App\Models\Employee;
 use App\Models\Location;
-use App\Models\Sector;
+use App\Models\Department;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use League\Csv\Reader;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeSeeder extends Seeder
 {
@@ -42,6 +43,7 @@ class EmployeeSeeder extends Seeder
                 'name_ar' => $record['name_ar'],
                 'name_en' => $record['name_en'],
                 'email' => $record['email'],
+                'password' => Hash::make('password'),
                 'status' => $record['status'],
                 'company' => $record['company'],
                 'job_title' => $record['job_title'],
