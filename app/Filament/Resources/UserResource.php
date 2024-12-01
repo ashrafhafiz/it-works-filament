@@ -87,6 +87,10 @@ class UserResource extends Resource
                             ->send();
                     })
                     ->sortable(),
+                Tables\Columns\TextColumn::make('last_login_timestamp')
+                    ->label('Last Login')
+                    ->dateTime()
+                    ->sortable(),
                 // Tables\Columns\SelecteColumn::make('active')
                 // ->options([
                 //     'active' => 'active',

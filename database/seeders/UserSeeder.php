@@ -18,17 +18,17 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Yousef Soliman',
                 'email' => 'ysoliman@example.com',
-                'role' => 'technician',
+                'type' => 'technician',
             ],
             [
                 'name' => 'Ahmed Roby',
                 'email' => 'aroby@example.com',
-                'role' => 'technician',
+                'type' => 'technician',
             ],
             [
                 'name' => 'Amr Ismail',
                 'email' => 'aismail@example.com',
-                'role' => 'technician',
+                'type' => 'technician',
             ],
         ];
 

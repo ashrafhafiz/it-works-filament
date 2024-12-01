@@ -41,7 +41,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'name',
         'email',
         'password',
-        'role',
+        'type',
         'is_active',
         'last_login_timestamp',
         'created_by',
@@ -117,7 +117,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
                 'email' => 'admin@example.com',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
-                'role' => 'admin',
+                'type' => 'admin',
                 'is_active' => true,
                 'last_login_timestamp' => now(),
                 'created_by' => 1,
@@ -138,5 +138,18 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     public function updated_by()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function updateLastLogin()
+    {
+        $this->last_login_timestamp = now();
+        $this->save();
+        //
+        // Security Considerations: To prevent constant updates on every request, you might want to limit updates
+        // Only update if last login was more than 5 minutes ago
+        // if (!$this->last_login_timestamp || now()->diffInMinutes($this->last_login_timestamp) > 5) {
+        //     $this->last_login_timestamp = now();
+        //     $this->save();
+        // }
     }
 }

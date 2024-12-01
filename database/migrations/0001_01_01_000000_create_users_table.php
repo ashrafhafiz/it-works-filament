@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ["admin", "technician", "user", "visitor"])->default('visitor');
+            $table->enum('type', ["admin", "technician", "user", "visitor"])->default('visitor');
             $table->boolean('is_active')->default(true);
             $table->timestamp('last_login_timestamp')->nullable();
             $table->foreignIdFor(User::class, 'created_by')->nullable();

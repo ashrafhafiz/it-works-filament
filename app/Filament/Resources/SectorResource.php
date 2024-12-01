@@ -90,6 +90,14 @@ class SectorResource extends Resource
                     })
                     ->badge()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('created_by.name')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_by.name')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

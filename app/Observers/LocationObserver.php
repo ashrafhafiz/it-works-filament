@@ -14,7 +14,7 @@ class LocationObserver
      */
     public function created(Location $location): void
     {
-        $recipients = User::where('role', 'admin')->get();
+        $recipients = User::where('type', 'admin')->get();
 
         Notification::make()
             ->title('A new location has been created successfully')
@@ -26,7 +26,7 @@ class LocationObserver
      */
     public function updated(Location $location): void
     {
-        $recipients = User::where('role', 'admin')->get();
+        $recipients = User::where('type', 'admin')->get();
         // dd($recipients);
         Notification::make()
             ->title('A new location has been updated successfully')
