@@ -13,8 +13,8 @@ class SystemSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            ReligionSeeder::class,
             NationalitySeeder::class,
+            ReligionSeeder::class,
             GovernmentSeeder::class,
             GraduationSeeder::class,
             DivisionSeeder::class,

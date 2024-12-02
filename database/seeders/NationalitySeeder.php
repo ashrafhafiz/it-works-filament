@@ -18,17 +18,14 @@ class NationalitySeeder extends Seeder
             [
                 'nationality_name_ar' => 'مصرى',
                 'nationality_name_en' => 'egyptian',
-                'created_by' => 1,
             ],
             [
                 'nationality_name_ar' => 'سوداني',
                 'nationality_name_en' => 'Sudanese',
-                'created_by' => 1,
             ],
             [
                 'nationality_name_ar' => 'بريطاني',
                 'nationality_name_en' => 'British',
-                'created_by' => 1,
             ],
         ];
 
@@ -40,7 +37,7 @@ class NationalitySeeder extends Seeder
         //
         // Use the following instead for sqlite
         // DB::statement('PRAGMA foreign_keys = OFF;');
-        DB::table('religions')->truncate();
+        DB::table('nationalities')->truncate();
 
         foreach ($nationalities as $nationality) {
             Nationality::create($nationality);

@@ -20,21 +20,21 @@ class LocationSeeder extends Seeder
                 'address' => '6 Ibn Malek St., Nahda Sq.',
                 'city' => 'Giza',
                 'postal_code' => '12311',
-                'country' => 'Egypt'
+                'country' => 'Egypt',
             ],
             [
                 'name' => 'LV Factory',
                 'address' => 'Industrial Zone',
                 'city' => '6th of October',
                 'postal_code' => 'NA',
-                'country' => 'Egypt'
+                'country' => 'Egypt',
             ],
             [
                 'name' => 'MV/HV Factory',
                 'address' => 'Industrial Zone',
                 'city' => '6th of October',
                 'postal_code' => 'NA',
-                'country' => 'Egypt'
+                'country' => 'Egypt',
             ]
         ];
 

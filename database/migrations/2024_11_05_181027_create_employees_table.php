@@ -50,6 +50,8 @@ return new class extends Migration
             $table->foreignIdFor(Location::class)->nullable();
             $table->foreignIdFor(Sector::class)->nullable();
             $table->foreignIdFor(Department::class)->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

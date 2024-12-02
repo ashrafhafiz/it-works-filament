@@ -18,12 +18,10 @@ class ReligionSeeder extends Seeder
             [
                 'religion_name_ar' => 'مسلم',
                 'religion_name_en' => 'Muslim',
-                'created_by' => 1,
             ],
             [
                 'religion_name_ar' => 'مسيحي',
                 'religion_name_en' => 'Christian',
-                'created_by' => 1,
             ],
         ];
 

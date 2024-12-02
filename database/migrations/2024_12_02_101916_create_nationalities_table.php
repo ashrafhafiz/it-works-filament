@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->string('nationality_name_ar');
             $table->string('nationality_name_en')->nullable();
-            $table->foreignIdFor(User::class, 'created_by')->nullable();
-            $table->foreignIdFor(User::class, 'updated_by')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

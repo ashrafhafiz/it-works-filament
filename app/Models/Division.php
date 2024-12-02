@@ -29,8 +29,6 @@ class Division extends Model
     protected $casts = [
         'id' => 'integer',
         'division_id' => 'integer',
-        'created_by' => 'integer',
-        'updated_by' => 'integer',
     ];
 
     protected static function booted()
@@ -38,27 +36,21 @@ class Division extends Model
         // Automatically set created_by and updated_by when creating or updating
         static::creating(function ($model) {
             // If no created_by is set, try to use authenticated user
-            if (empty($model->created_by)) {
-                if (Auth::check()) {
-                    $model->created_by = Auth::id();
-                } else {
-                    // Fallback to a default admin user or first user
-                    $defaultAdminId = self::getDefaultAdminId();
-                    $model->created_by = $defaultAdminId;
-                }
+            if (Auth::check()) {
+                $model->created_by = User::find(Auth::id())->name;
+            } else {
+                // Fallback to a default admin user or first user
+                $model->created_by = self::getDefaultAdminId();
             }
         });
 
         static::updating(function ($model) {
             // If no updated_by is set, try to use authenticated user
-            if (empty($model->updated_by)) {
-                if (Auth::check()) {
-                    $model->updated_by = Auth::id();
-                } else {
-                    // Fallback to a default admin user or first user
-                    $defaultAdminId = self::getDefaultAdminId();
-                    $model->updated_by = $defaultAdminId;
-                }
+            if (Auth::check()) {
+                $model->updated_by = User::find(Auth::id())->name;
+            } else {
+                // Fallback to a default admin user or first user
+                $model->updated_by = self::getDefaultAdminId();
             }
         });
     }
@@ -67,20 +59,7 @@ class Division extends Model
     protected static function getDefaultAdminId()
     {
         // Try to find an existing admin user
-        $adminUser = User::where('email', 'admin@example.com')->first();
-
-        return $adminUser->id;
-    }
-
-    // Relationship to track who created the user
-    public function created_by()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    // Relationship to track who last updated the user
-    public function updated_by()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
+        // return User::where('email', 'admin@example.com')->first()->name;
+        return 'System';
     }
 }

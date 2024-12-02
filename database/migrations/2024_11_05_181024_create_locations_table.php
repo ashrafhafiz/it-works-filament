@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('city');
             $table->string('postal_code')->nullable();
             $table->string('country');
-            $table->foreignIdFor(User::class, 'created_by')->nullable();
-            $table->foreignIdFor(User::class, 'updated_by')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

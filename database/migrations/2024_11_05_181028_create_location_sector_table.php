@@ -15,6 +15,8 @@ return new class extends Migration
             $table->foreignId('location_id')->constrained()->cascadeOnDelete();
             $table->foreignId('sector_id')->constrained()->cascadeOnDelete();
             $table->unique(['location_id', 'sector_id']);
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

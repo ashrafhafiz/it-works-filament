@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('division_name_en')->nullable();
             $table->string('notes')->nullable();
             $table->foreignIdFor(Division::class, 'parent_division_id')->index('division_id')->nullable();
-            $table->foreignIdFor(User::class, 'created_by')->nullable();
-            $table->foreignIdFor(User::class, 'updated_by')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

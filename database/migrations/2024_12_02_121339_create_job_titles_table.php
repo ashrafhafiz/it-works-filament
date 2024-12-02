@@ -21,8 +21,8 @@ return new class extends Migration
             $table->foreignIdFor(JobCategory::class, 'job_category_id')->nullable();
             $table->string('job_code')->nullable();
             $table->enum('job_class', ["White Collars", "Blue Collars"])->nullable();
-            $table->foreignIdFor(User::class, 'created_by')->nullable();
-            $table->foreignIdFor(User::class, 'updated_by')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

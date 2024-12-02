@@ -70,11 +70,11 @@ class DepartmentResource extends Resource
                     ->badge()
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_by.name')
+                Tables\Columns\TextColumn::make('created_by')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_by.name')
+                Tables\Columns\TextColumn::make('updated_by')
                     ->searchable()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

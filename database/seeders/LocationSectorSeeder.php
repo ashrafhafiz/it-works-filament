@@ -37,6 +37,7 @@ class LocationSectorSeeder extends Seeder
                     'sector_id' => Sector::where('name', $sector)->get()->first()->id,
                     'created_at' => now(),
                     'updated_at' => now(),
+                    'created_by' => Sector::getDefaultAdminId(),
                 ]);
             }
         }
