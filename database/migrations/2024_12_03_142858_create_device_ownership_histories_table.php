@@ -20,6 +20,8 @@ return new class extends Migration
             $table->dateTime('assigned_date');
             $table->dateTime('returned_date')->nullable();
             $table->string('reason')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('laptop_ownership_histories');
+        Schema::dropIfExists('device_ownership_histories');
     }
 };

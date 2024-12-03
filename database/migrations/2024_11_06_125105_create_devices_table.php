@@ -35,6 +35,8 @@ return new class extends Migration
             $table->foreignIdFor(Employee::class, 'employee_no');
             $table->foreignIdFor(Manufacturer::class, 'manufacturer_id');
             $table->foreignIdFor(DeviceType::class, 'device_type_id');
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -19,7 +20,9 @@ class DeviceOwnershipHistory extends Model
         'employee_no',
         'assigned_date',
         'returned_date',
-        'reason'
+        'reason',
+        'created_by',
+        'updated_by',
     ];
 
     /**
@@ -32,6 +35,38 @@ class DeviceOwnershipHistory extends Model
         'device_id' => 'integer',
         'employee_no' => 'integer',
     ];
+
+    protected static function booted()
+    {
+        // Automatically set created_by and updated_by when creating or updating
+        static::creating(function ($model) {
+            // If no created_by is set, try to use authenticated user
+            if (Auth::check()) {
+                $model->created_by = User::find(Auth::id())->name;
+            } else {
+                // Fallback to a default admin user or first user
+                $model->created_by = self::getDefaultAdminId();
+            }
+        });
+
+        static::updating(function ($model) {
+            // If no updated_by is set, try to use authenticated user
+            if (Auth::check()) {
+                $model->updated_by = User::find(Auth::id())->name;
+            } else {
+                // Fallback to a default admin user or first user
+                $model->updated_by = self::getDefaultAdminId();
+            }
+        });
+    }
+
+    // Helper method to get a default admin ID for seeding
+    protected static function getDefaultAdminId()
+    {
+        // Try to find an existing admin user
+        // return User::where('email', 'admin@example.com')->first()->name;
+        return 'System';
+    }
 
     public function device()
     {

@@ -4,49 +4,37 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Device;
 use Filament\Forms\Form;
-use App\Models\DeviceType;
+use App\Models\Government;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\DeviceTypeResource\Pages;
-use App\Filament\Resources\DeviceTypeResource\RelationManagers;
+use App\Filament\Resources\GovernmentResource\Pages;
+use App\Filament\Resources\GovernmentResource\RelationManagers;
 
-class DeviceTypeResource extends Resource
+class GovernmentResource extends Resource
 {
-    protected static ?string $model = DeviceType::class;
+    protected static ?string $model = Government::class;
 
     // Optional: Assign to a group
     protected static ?string $navigationGroup = 'System Management';
 
     // Optional: Sort within the group
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 8;
 
-    protected static ?string $navigationIcon = 'heroicon-s-numbered-list';
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
-
-    public static function getNavigationBadgeColor(): ?string
-    {
-        return 'primary';
-    }
-
-    public static function getNavigationBadgeTooltip(): ?string
-    {
-        return 'The number of device types';
-    }
+    protected static ?string $navigationIcon = 'heroicon-o-wrench-screwdriver';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('type')
+                Forms\Components\TextInput::make('government_name_ar')
                     ->required()
+                    ->maxLength(255)
+                    ->unique(ignoreRecord: true),
+                Forms\Components\TextInput::make('government_name_en')
+                    ->maxLength(255)
                     ->unique(ignoreRecord: true),
             ]);
     }
@@ -55,11 +43,15 @@ class DeviceTypeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('type')
+                Tables\Columns\TextColumn::make('government_name_ar')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('government_name_en')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_by')
+                    ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_by')
+                    ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -74,8 +66,8 @@ class DeviceTypeResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->successNotificationTitle('Device type has been updated successfully'),
-                Tables\Actions\DeleteAction::make()->successNotificationTitle('Device type has been deleted successfully'),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -87,7 +79,7 @@ class DeviceTypeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageDeviceTypes::route('/'),
+            'index' => Pages\ManageGovernments::route('/'),
         ];
     }
 }
