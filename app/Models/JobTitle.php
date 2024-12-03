@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class JobTitle extends Model
 {
@@ -62,5 +63,10 @@ class JobTitle extends Model
         // Try to find an existing admin user
         // return User::where('email', 'admin@example.com')->first()->name;
         return 'System';
+    }
+
+    public function jobCategory(): BelongsTo
+    {
+        return $this->belongsTo(JobCategory::class);
     }
 }

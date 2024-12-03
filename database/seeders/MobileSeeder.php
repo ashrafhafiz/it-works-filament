@@ -15,7 +15,7 @@ class MobileSeeder extends Seeder
      */
     public function run(): void
     {
-        $filePath = database_path('csvs/mobiles.csv');
+        $filePath = database_path('csvs/mobiles_v2.csv');
         $csv = Reader::createFromPath($filePath, 'r');
         $csv->setHeaderOffset(0);
 
@@ -32,13 +32,17 @@ class MobileSeeder extends Seeder
         DB::table('mobiles')->truncate();
 
         foreach ($records as $record) {
-
-            $employee_no = Employee::where('name_ar', $record['name_ar'])->get()->first()->employee_no;
-
             Mobile::create([
-                // 'employee_no' => $record['employee_no'],
-                'employee_no' => $employee_no,
+                'employee_no' => $record['employee_no'],
                 'mobile_no' => $record['mobile_no'],
+                'm_name_ar' => $record['m_name_ar'],
+                'm_national_id' => $record['m_national_id'],
+                'm_address' => $record['m_address'],
+                'm_location' => $record['m_location'],
+                'mobile_type' => 'voice',
+                'rate_plan' => $record['rate_plan'],
+                'bouquet_value' => $record['bouquet_value'],
+                'status' => $record['status'],
             ]);
         }
 

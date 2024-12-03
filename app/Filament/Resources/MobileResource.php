@@ -48,9 +48,13 @@ class MobileResource extends Resource
                     // ->numeric()
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('m_name_ar')
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('mobile_no')
                     ->formatStateUsing(fn($state) => '0' . $state)
-                    ->extraAttributes(['class' => 'font-mono text-lg text-red-700'])
+                    ->extraAttributes(['class' => 'font-mono text-lg text-red-700'], true)
                     // ->color('danger')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('rate_plan')
@@ -58,6 +62,23 @@ class MobileResource extends Resource
                 Tables\Columns\TextColumn::make('bouquet_value')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('m_national_id')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('m_location')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('m_address')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('created_by')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_by')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

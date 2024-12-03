@@ -84,4 +84,39 @@ class Device extends Model
     {
         return $this->belongsTo(DeviceType::class);
     }
+
+    public function currentOwner()
+    {
+        return $this->belongsTo(Employee::class, 'employee_no');
+    }
+
+    public function ownershipHistories()
+    {
+        return $this->hasMany(DeviceOwnershipHistory::class);
+    }
+
+    // Method to transfer laptop
+    public function transferTo(Employee $employee, $reason = null)
+    {
+        // Create a new ownership history record
+        $this->ownershipHistories()->create([
+            'employee_no' => $employee->employee_no,
+            'assigned_date' => now(),
+            'reason' => $reason
+        ]);
+
+        // Update current owner
+        $this->update(['employee_no' => $employee->employee_no]);
+
+        return $this;
+    }
+
+    // Method to get previous owners
+    public function getPreviousOwnersAttribute()
+    {
+        return $this->ownershipHistories()
+            ->with('employee')
+            ->whereNotNull('returned_date')
+            ->get();
+    }
 }

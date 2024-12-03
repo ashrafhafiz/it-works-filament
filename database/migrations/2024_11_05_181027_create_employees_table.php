@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('name_ar')->unique();
             $table->string('name_en')->nullable();
             $table->string('email')->nullable();
+            $table->string('password');
             $table->date('hiring_date');
             $table->date('birth_date');
             $table->enum('status', ["active", "inactive", "terminated"])->default('active');
@@ -50,6 +51,7 @@ return new class extends Migration
             $table->foreignIdFor(Location::class)->nullable();
             $table->foreignIdFor(Sector::class)->nullable();
             $table->foreignIdFor(Department::class)->nullable();
+            $table->timestamp('last_login_timestamp')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();

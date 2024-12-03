@@ -129,6 +129,8 @@ class EmployeeResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('employee_no')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name_ar')
                     ->label('Name (ar)')
                     ->searchable(),
@@ -138,29 +140,56 @@ class EmployeeResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
+                    ->badge(),
                 Tables\Columns\TextColumn::make('company')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('job_title')
-                    ->searchable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('job_title.job_title_name_ar'),
                 Tables\Columns\TextColumn::make('class')
-                    ->searchable(),
+                    ->badge(),
                 Tables\Columns\TextColumn::make('national_id')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('employee_no')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('manager.name_ar')
-                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('nationality.nationality_name_ar')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('religion.religion_name_ar')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('government.government_name_ar')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('graduation.graduation_name_ar')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('division.division_name_ar')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('division.parentDivision.division_name_ar')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('jobTitle.job_title_name_ar')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('location.name')
-                    ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('sector.name')
-                    ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('department.name')
-                    ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('created_by')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_by')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('hiring_date')
+                    ->date()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('birth_date')
+                    ->date()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -173,6 +202,13 @@ class EmployeeResource extends Resource
             ->filters([
                 Tables\Filters\Filter::make('status')
                     ->form([
+                        Forms\Components\Select::make('class')
+                            ->label('Filter by Class')
+                            ->placeholder('Select a Class')
+                            ->options([
+                                'White Collars' => 'White Collars',
+                                'Blue Collars' => 'Blue Collars',
+                            ]),
                         Forms\Components\Select::make('status')
                             ->label('Filter by Status')
                             ->placeholder('Select a Status')
@@ -202,6 +238,9 @@ class EmployeeResource extends Resource
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
+                            ->when($data['class'], function ($query) use ($data) {
+                                return $query->where('class', $data['class']);
+                            })
                             ->when($data['status'], function ($query) use ($data) {
                                 return $query->where('status', $data['status']);
                             })

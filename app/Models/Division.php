@@ -62,4 +62,9 @@ class Division extends Model
         // return User::where('email', 'admin@example.com')->first()->name;
         return 'System';
     }
+
+    public function parentDivision()
+    {
+        return $this->belongsTo(Division::class, 'parent_division_id', 'division_id');
+    }
 }
