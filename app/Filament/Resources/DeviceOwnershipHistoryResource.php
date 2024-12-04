@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\DeviceOwnershipHistoryResource\Pages;
 use App\Filament\Resources\DeviceOwnershipHistoryResource\RelationManagers;
+use App\Models\Employee;
 
 class DeviceOwnershipHistoryResource extends Resource
 {
@@ -28,16 +29,18 @@ class DeviceOwnershipHistoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('device_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('employee_no')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\DateTimePicker::make('assigned_date')
+                Forms\Components\TextInput::make('service_tag')
                     ->required(),
-                Forms\Components\DateTimePicker::make('returned_date'),
-                Forms\Components\TextInput::make('reason')
+                Forms\Components\Select::make('employee_no')
+                    ->label('Current Owner')
+                    // ->options(Employee::all()->pluck('name_ar', 'employee_no'))
+                    // ->searchable()
+                    ->relationship('employee', 'name_ar')
+                    ->required(),
+                Forms\Components\DatePicker::make('assigned_date')
+                    ->required(),
+                Forms\Components\DatePicker::make('returned_date'),
+                Forms\Components\TextInput::make('notes')
                     ->maxLength(255),
             ]);
     }
@@ -46,19 +49,19 @@ class DeviceOwnershipHistoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('device_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('service_tag')
+                    ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('employee_no')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('employee.name_ar')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('assigned_date')
-                    ->dateTime()
+                    ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('returned_date')
-                    ->dateTime()
+                    ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('reason')
+                Tables\Columns\TextColumn::make('notes')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_by')
                     ->toggleable(isToggledHiddenByDefault: true),

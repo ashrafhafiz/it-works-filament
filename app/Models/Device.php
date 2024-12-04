@@ -6,10 +6,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Device extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'service_tag'; // Specify the string column as primary key
+
+    // If using a non-incrementing primary key
+    public $incrementing = false;
+
+    // Specify the key type as string
+    protected $keyType = 'string';
 
     /**
      * The attributes that are mass assignable.
@@ -17,27 +26,27 @@ class Device extends Model
      * @var array
      */
     protected $fillable = [
-        'model',
         'service_tag',
+        'device_type_id',
+        'manufacturer_id',
+        'model',
+        'status',
+        'shipping_date',
         'processor_type',
         'memory_size',
         'storage_size',
         'graphics',
-        // 'storage1_size',
-        // 'storage2_size',
-        // 'graphics_1',
-        // 'graphics_2',
         'sound',
         'ethernet',
         'wireless',
         'display',
-        'shipping_date',
-        'status',
-        'employee_no',
-        'manufacturer_id',
-        'device_type_id',
         'created_by',
         'updated_by',
+        // 'employee_no',
+        // 'storage1_size',
+        // 'storage2_size',
+        // 'graphics_1',
+        // 'graphics_2',
     ];
 
     /**
@@ -47,11 +56,11 @@ class Device extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'shipping_date' => 'date',
-        'employee_no' => 'integer',
-        'manufacturer_id' => 'integer',
         'device_type_id' => 'integer',
+        'manufacturer_id' => 'integer',
+        'shipping_date' => 'date',
         'storage_size' => 'array',
+        // 'employee_no' => 'integer',
     ];
 
     protected static function booted()
@@ -104,10 +113,9 @@ class Device extends Model
     //     //     //     : json_encode([$value]);
     // }
 
-
-    public function employee(): BelongsTo
+    public function deviceType(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'employee_no');
+        return $this->belongsTo(DeviceType::class);
     }
 
     public function manufacturer(): BelongsTo
@@ -115,29 +123,19 @@ class Device extends Model
         return $this->belongsTo(Manufacturer::class);
     }
 
-    public function deviceType(): BelongsTo
+    public function deviceOwnershipHistory()
     {
-        return $this->belongsTo(DeviceType::class);
-    }
-
-    public function currentOwner()
-    {
-        return $this->belongsTo(Employee::class, 'employee_no');
-    }
-
-    public function ownershipHistories()
-    {
-        return $this->hasMany(DeviceOwnershipHistory::class);
+        return $this->hasMany(DeviceOwnershipHistory::class, 'service_tag', 'service_tag');
     }
 
     // Method to transfer laptop
-    public function transferTo(Employee $employee, $reason = null)
+    public function transferTo(Employee $employee, $notes = null)
     {
         // Create a new ownership history record
-        $this->ownershipHistories()->create([
+        $this->deviceOwnershipHistory()->create([
             'employee_no' => $employee->employee_no,
             'assigned_date' => now(),
-            'reason' => $reason
+            'notes' => $notes
         ]);
 
         // Update current owner
@@ -149,9 +147,17 @@ class Device extends Model
     // Method to get previous owners
     public function getPreviousOwnersAttribute()
     {
-        return $this->ownershipHistories()
+        return $this->deviceOwnershipHistory()
             ->with('employee')
             ->whereNotNull('returned_date')
+            ->get();
+    }
+
+    public function getCurrentOwnersAttribute()
+    {
+        return $this->deviceOwnershipHistory()
+            ->with('employee')
+            ->whereNull('returned_date')
             ->get();
     }
 }

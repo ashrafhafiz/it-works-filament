@@ -16,11 +16,11 @@ class DeviceOwnershipHistory extends Model
      * @var array
      */
     protected $fillable = [
-        'device_id',
+        'service_tag',
         'employee_no',
         'assigned_date',
         'returned_date',
-        'reason',
+        'notes',
         'created_by',
         'updated_by',
     ];
@@ -32,8 +32,9 @@ class DeviceOwnershipHistory extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'device_id' => 'integer',
         'employee_no' => 'integer',
+        'assigned_date' => 'date',
+        'returned_date' => 'date',
     ];
 
     protected static function booted()
@@ -70,7 +71,7 @@ class DeviceOwnershipHistory extends Model
 
     public function device()
     {
-        return $this->belongsTo(Device::class);
+        return $this->belongsTo(Device::class, 'service_tag', 'service_tag');
     }
 
     public function employee()

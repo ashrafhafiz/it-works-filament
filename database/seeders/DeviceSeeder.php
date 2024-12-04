@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use App\Models\Device;
 use League\Csv\Reader;
 use App\Models\DeviceType;
 use App\Models\Manufacturer;
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -38,25 +38,25 @@ class DeviceSeeder extends Seeder
             $device_type_id = DeviceType::where('type', $record['device_type'])->get()->first()->id;
 
             Device::create([
-                'model' => $record['model'],
                 'service_tag' => $record['service_tag'],
+                'device_type_id' => $device_type_id,
+                'manufacturer_id' => $manufacturer_id,
+                'model' => $record['model'],
+                'status' => $record['status'],
                 'processor_type' => $record['processor_type'],
                 'memory_size' => $record['memory_size'],
                 'storage_size' => [$record['storage1_size'], $record['storage2_size']],
-                // 'storage1_size' => $record['storage1_size'],
-                // 'storage2_size' => $record['storage2_size'],
                 'graphics' => $record['graphics_1'],
-                // 'graphics_1' => $record['graphics_1'],
-                // 'graphics_2' => $record['graphics_2'],
                 'sound' => $record['sound'],
                 'ethernet' => $record['ethernet'],
                 'wireless' => $record['wireless'],
                 'display' => $record['display'],
-                'shipping_date' => Carbon::today(),
-                'status' => $record['status'],
-                'employee_no' => $record['employee_no'],
-                'manufacturer_id' => $manufacturer_id,
-                'device_type_id' => $device_type_id,
+                'shipping_date' => empty($record['shipping_date']) ? '1/1/1980' : $record['shipping_date'],
+                // 'employee_no' => $record['employee_no'],
+                // 'storage1_size' => $record['storage1_size'],
+                // 'storage2_size' => $record['storage2_size'],
+                // 'graphics_1' => $record['graphics_1'],
+                // 'graphics_2' => $record['graphics_2'],
             ]);
         }
 

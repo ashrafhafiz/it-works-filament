@@ -29,8 +29,10 @@ class DeviceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('employee_id')
-                    ->relationship('employee', 'name_ar')
+
+                Forms\Components\TextInput::make('service_tag')
+                    ->required(),
+                Forms\Components\TextInput::make('status')
                     ->required(),
                 Forms\Components\Select::make('device_type_id')
                     ->relationship('deviceType', 'type')
@@ -39,8 +41,6 @@ class DeviceResource extends Resource
                     ->relationship('manufacturer', 'name')
                     ->required(),
                 Forms\Components\TextInput::make('model')
-                    ->required(),
-                Forms\Components\TextInput::make('service_tag')
                     ->required(),
                 Forms\Components\TextInput::make('processor_type')
                     ->required(),
@@ -68,8 +68,6 @@ class DeviceResource extends Resource
                     ->required(),
                 Forms\Components\DatePicker::make('shipping_date')
                     ->required(),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
             ]);
     }
 
@@ -77,21 +75,46 @@ class DeviceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('employee.name_ar')
-                    ->searchable()
+                // Tables\Columns\TextColumn::make('employee.name_ar')
+                //     ->searchable()
+                //     ->sortable(),
+                Tables\Columns\TextColumn::make('service_tag')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('deviceType.type')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('manufacturer.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deviceType.type')
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('model')
+                    ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('service_tag')
+                Tables\Columns\TextColumn::make('status')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('current_owner')
+                    // ->searchable()
+                    ->label('Current Owner')
+                    ->getStateUsing(function (Device $record) {
+                        // Get the most recent active ownership history
+                        $currentOwnership = $record->deviceOwnershipHistory()
+                            ->whereNull('returned_date')
+                            ->with('employee')
+                            ->latest('assigned_date')
+                            ->first();
+
+                        return $currentOwnership
+                            ? $currentOwnership->employee->name_ar
+                            : 'Not Assigned';
+                    })
+                    ->badge()
+                    ->color('primary'),
+                Tables\Columns\TextColumn::make('shipping_date')
+                    ->date()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('processor_type')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('memory_size')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('storage_size')
                     // ->formatStateUsing(function ($state) {
                     // if (!is_array($state)) return 'N/A';
@@ -99,7 +122,8 @@ class DeviceResource extends Resource
                     // ->map(fn($spec) => "{$spec['key']}: {$spec['value']}")
                     // ->implode(', ');
                     // })
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 // Tables\Columns\TextColumn::make('storage1_size')
                 //     ->searchable(),
                 // Tables\Columns\TextColumn::make('storage2_size')
@@ -125,11 +149,6 @@ class DeviceResource extends Resource
                 Tables\Columns\TextColumn::make('display')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('shipping_date')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_by')
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_by')
@@ -171,7 +190,7 @@ class DeviceResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\DeviceOwnershipHistoryRelationManager::class,
         ];
     }
 

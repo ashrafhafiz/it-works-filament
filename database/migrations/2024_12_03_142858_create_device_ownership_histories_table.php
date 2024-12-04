@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('device_ownership_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Device::class, 'device_id');
+            $table->foreignIdFor(Device::class, 'service_tag');
             $table->foreignIdFor(Employee::class, 'employee_no');
             $table->dateTime('assigned_date');
             $table->dateTime('returned_date')->nullable();
-            $table->string('reason')->nullable();
+            $table->string('notes')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();
