@@ -19,13 +19,14 @@ class DeviceOwnershipHistoryRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\TextInput::make('service_tag')
+                    ->default(fn($livewire) => $livewire->ownerRecord->service_tag)
                     ->required(),
                 Forms\Components\Select::make('employee_no')
-                    ->label('Current Owner')
-                    // ->options(Employee::all()->pluck('name_ar', 'employee_no'))
-                    // ->searchable()
                     ->relationship('employee', 'name_ar')
-                    ->required(),
+                    ->searchable()
+                    ->preload()
+                    ->required()
+                    ->label('Current Owner'),
                 Forms\Components\DatePicker::make('assigned_date')
                     ->required(),
                 Forms\Components\DatePicker::make('returned_date'),

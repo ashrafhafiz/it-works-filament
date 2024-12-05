@@ -207,7 +207,7 @@ class Employee extends Authenticatable implements HasName
     //     return $this->hasMany(Device::class, 'employee_no');
     // }
 
-    public function deviceOwnershipHistories()
+    public function deviceOwnershipHistory()
     {
         return $this->hasMany(DeviceOwnershipHistory::class, 'employee_no', 'employee_no');
     }

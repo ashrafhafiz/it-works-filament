@@ -32,8 +32,6 @@ class DeviceResource extends Resource
 
                 Forms\Components\TextInput::make('service_tag')
                     ->required(),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
                 Forms\Components\Select::make('device_type_id')
                     ->relationship('deviceType', 'type')
                     ->required(),
@@ -42,22 +40,23 @@ class DeviceResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('model')
                     ->required(),
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'active' => 'active',
+                        'available' => 'available',
+                        'reserved' => 'reserved',
+                        'retired' => 'retired',
+                        'repair' => 'repair',
+                    ])
+                    ->required(),
                 Forms\Components\TextInput::make('processor_type')
                     ->required(),
                 Forms\Components\TextInput::make('memory_size')
                     ->required(),
                 Forms\Components\TextInput::make('storage_size')
                     ->required(),
-                // Forms\Components\TextInput::make('storage1_size')
-                //     ->required(),
-                // Forms\Components\TextInput::make('storage2_size')
-                //     ->required(),
                 Forms\Components\TextInput::make('graphics')
                     ->required(),
-                // Forms\Components\TextInput::make('graphics_1')
-                //     ->required(),
-                // Forms\Components\TextInput::make('graphics_2')
-                //     ->required(),
                 Forms\Components\TextInput::make('sound')
                     ->required(),
                 Forms\Components\TextInput::make('ethernet')
@@ -88,9 +87,17 @@ class DeviceResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
+                    ->sortable()
+                    ->searchable()
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'active' => 'success',
+                        'available' => 'warning',
+                        'reserved' => 'primary',
+                        'retired' => 'danger',
+                        default => 'gray',
+                    }),
                 Tables\Columns\TextColumn::make('current_owner')
-                    // ->searchable()
                     ->label('Current Owner')
                     ->getStateUsing(function (Device $record) {
                         // Get the most recent active ownership history
@@ -104,8 +111,16 @@ class DeviceResource extends Resource
                             ? $currentOwnership->employee->name_ar
                             : 'Not Assigned';
                     })
-                    ->badge()
-                    ->color('primary'),
+                    ->searchable(query: function (Builder $query, string $search) {
+                        return $query
+                            ->whereHas('deviceOwnershipHistory.employee', function (Builder $query) use ($search) {
+                                $query->where('name_ar', 'like', "%{$search}%")
+                                    ->orWhere('name_en', 'like', "%{$search}%")
+                                    ->whereHas('deviceOwnershipHistory', function (Builder $subQuery) {
+                                        $subQuery->whereNull('returned_date');
+                                    });
+                            });
+                    }),
                 Tables\Columns\TextColumn::make('shipping_date')
                     ->date()
                     ->sortable(),
