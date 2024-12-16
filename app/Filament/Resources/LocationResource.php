@@ -44,17 +44,46 @@ class LocationResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->unique(ignoreRecord: true),
-                Forms\Components\TextInput::make('address')
-                    ->required(),
-                Forms\Components\TextInput::make('city')
-                    ->required(),
-                Forms\Components\TextInput::make('postal_code'),
-                Forms\Components\TextInput::make('country')
-                    ->required(),
-            ]);
+                Forms\Components\Section::make('Location Information')
+                    ->description('Information about the location')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->unique(ignoreRecord: true),
+                        Forms\Components\TextInput::make('address')
+                            ->required(),
+                        Forms\Components\TextInput::make('city')
+                            ->required(),
+                        Forms\Components\TextInput::make('postal_code'),
+                        Forms\Components\TextInput::make('country')
+                            ->required(),
+                    ])->columnSpan(2),
+                Forms\Components\Section::make('Meta data')
+                    ->schema([
+                        Forms\Components\Group::make([
+                            Forms\Components\Placeholder::make('created_at')
+                                ->label('Created at')
+                                ->content(fn (Location $location): ?string => $location->created_at?->diffForHumans())
+                                ->hidden(fn (?Location $location): ?string => $location->id === null),
+                            Forms\Components\Placeholder::make('updated_at')
+                                ->label('Last Updated')
+                                ->content(fn (Location $location): ?string => $location->updated_at?->diffForHumans())
+                                ->hidden(fn (?Location $location): ?string => $location->id === null),
+
+                        ])->columns(2),
+                        Forms\Components\Group::make([
+                            Forms\Components\Placeholder::make('created_by')
+                                ->label('Created by:')
+                                ->content(fn (Location $location): ?string => $location->created_by)
+                                ->hidden(fn (?Location $location): ?string => $location->id === null),
+                            Forms\Components\Placeholder::make('updated_by')
+                                ->label('Updated by:')
+                                ->content(fn (Location $location): ?string => $location->updated_by)
+                                ->hidden(fn (?Location $location): ?string => $location->id === null),
+
+                        ])->columns(2),
+                    ])->columnSpan(1),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table

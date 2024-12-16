@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class TextSms extends Model
 {
+    use LogsActivity;
+
     protected $fillable = [
         'message',
         'response',
@@ -29,5 +33,10 @@ class TextSms extends Model
     public function sentFrom()
     {
         return $this->belongsTo(User::class, 'sent_from', 'id');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logAll()->useLogName(class_basename($this) . '_log');
     }
 }

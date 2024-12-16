@@ -48,15 +48,42 @@ class DepartmentResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('sector_id')
-                    ->relationship('sector', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->unique(ignoreRecord: true, modifyRuleUsing: function (Get $get, Unique $rule): Unique {
-                        return $rule->where('sector_id', $get('sector_id'));
-                    })
-            ]);
+                Forms\Components\Section::make('Department Information')
+                    ->description('Information about the department')
+                    ->schema([
+                        Forms\Components\Select::make('sector_id')
+                            ->relationship('sector', 'name')
+                            ->required(),
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->unique(ignoreRecord: true, modifyRuleUsing: function (Get $get, Unique $rule): Unique {
+                                return $rule->where('sector_id', $get('sector_id'));
+                            })
+                        ])->columnSpan(2),
+                Forms\Components\Section::make('Meta data')
+                    ->schema([
+                        Forms\Components\Group::make([
+                            Forms\Components\Placeholder::make('created_at')
+                                ->label('Created at')
+                                ->content(fn (Department $department): ?string => $department->created_at?->diffForHumans())
+                                ->hidden(fn (?Department $department): ?string => $department->id === null),
+                            Forms\Components\Placeholder::make('updated_at')
+                                ->label('Last Updated')
+                                ->content(fn (Department $department): ?string => $department->updated_at?->diffForHumans())
+                                ->hidden(fn (?Department $department): ?string => $department->id === null),
+                        ])->columns(2),
+                        Forms\Components\Group::make([
+                            Forms\Components\Placeholder::make('created_by')
+                                ->label('Created by:')
+                                ->content(fn (Department $department): ?string => $department->created_by)
+                                ->hidden(fn (?Department $department): ?string => $department->id === null),
+                            Forms\Components\Placeholder::make('updated_by')
+                                ->label('Updated by:')
+                                ->content(fn (Department $department): ?string => $department->updated_by)
+                                ->hidden(fn (?Department $department): ?string => $department->id === null),
+                        ])->columns(2),
+                    ])->columnSpan(1),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table

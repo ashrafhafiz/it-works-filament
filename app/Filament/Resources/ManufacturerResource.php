@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ManufacturerResource\Pages;
 use App\Filament\Resources\ManufacturerResource\RelationManagers;
+use App\Models\Department;
 use App\Models\Manufacturer;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -44,10 +45,37 @@ class ManufacturerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->unique(ignoreRecord: true),
-            ]);
+                Forms\Components\Section::make('Manufacturer Information')
+                    ->description('Information about the manufacturer')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->unique(ignoreRecord: true),
+                    ])->columnSpan(2),
+                Forms\Components\Section::make('Meta data')
+                    ->schema([
+                        Forms\Components\Group::make([
+                            Forms\Components\Placeholder::make('created_at')
+                                ->label('Created at')
+                                ->content(fn (Manufacturer $manufacturer): ?string => $manufacturer->created_at?->diffForHumans())
+                                ->hidden(fn (?Manufacturer $manufacturer): ?string => $manufacturer->id === null),
+                            Forms\Components\Placeholder::make('updated_at')
+                                ->label('Last Updated')
+                                ->content(fn (Manufacturer $manufacturer): ?string => $manufacturer->updated_at?->diffForHumans())
+                                ->hidden(fn (?Manufacturer $manufacturer): ?string => $manufacturer->id === null),
+                        ])->columns(2),
+                        Forms\Components\Group::make([
+                            Forms\Components\Placeholder::make('created_by')
+                                ->label('Created by:')
+                                ->content(fn (Manufacturer $manufacturer): ?string => $manufacturer->created_by)
+                                ->hidden(fn (?Manufacturer $manufacturer): ?string => $manufacturer->id === null),
+                            Forms\Components\Placeholder::make('updated_by')
+                                ->label('Updated by:')
+                                ->content(fn (Manufacturer $manufacturer): ?string => $manufacturer->updated_by)
+                                ->hidden(fn (?Manufacturer $manufacturer): ?string => $manufacturer->id === null),
+                        ])->columns(2),
+                    ])->columnSpan(1),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table

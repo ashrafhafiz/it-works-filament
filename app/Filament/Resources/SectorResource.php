@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SectorResource\Pages;
 use App\Filament\Resources\SectorResource\RelationManagers;
+use App\Models\Location;
 use App\Models\Sector;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -44,16 +45,43 @@ class SectorResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->unique(ignoreRecord: true),
-                Forms\Components\Select::make('locations')
-                    ->relationship('locations', 'name')
-                    ->multiple()
-                    ->preload()
-                    ->searchable()
-                    ->visibleOn('create'),
-            ]);
+                Forms\Components\Section::make('Sector Information')
+                    ->description('Information about the Sector')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->unique(ignoreRecord: true),
+                        Forms\Components\Select::make('locations')
+                            ->relationship('locations', 'name')
+                            ->multiple()
+                            ->preload()
+                            ->searchable()
+                            ->visibleOn('create'),
+                        ])->columnSpan(2),
+                Forms\Components\Section::make('Meta data')
+                    ->schema([
+                        Forms\Components\Group::make([
+                            Forms\Components\Placeholder::make('created_at')
+                                ->label('Created at')
+                                ->content(fn (Sector $sector): ?string => $sector->created_at?->diffForHumans())
+                                ->hidden(fn (?Sector $sector): ?string => $sector->id === null),
+                            Forms\Components\Placeholder::make('updated_at')
+                                ->label('Last Updated')
+                                ->content(fn (Sector $sector): ?string => $sector->updated_at?->diffForHumans())
+                                ->hidden(fn (?Sector $sector): ?string => $sector->id === null),
+                        ])->columns(2),
+                        Forms\Components\Group::make([
+                            Forms\Components\Placeholder::make('created_by')
+                                ->label('Created by:')
+                                ->content(fn (Sector $sector): ?string => $sector->created_by)
+                                ->hidden(fn (?Sector $sector): ?string => $sector->id === null),
+                            Forms\Components\Placeholder::make('updated_by')
+                                ->label('Updated by:')
+                                ->content(fn (Sector $sector): ?string => $sector->updated_by)
+                                ->hidden(fn (?Sector $sector): ?string => $sector->id === null),
+                        ])->columns(2),
+                    ])->columnSpan(1),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table

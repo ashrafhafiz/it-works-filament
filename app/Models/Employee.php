@@ -11,11 +11,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 
 class Employee extends Authenticatable implements HasName
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $guard = 'employee';
 
@@ -210,5 +212,10 @@ class Employee extends Authenticatable implements HasName
     public function deviceOwnershipHistory()
     {
         return $this->hasMany(DeviceOwnershipHistory::class, 'employee_no', 'employee_no');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logAll()->useLogName(class_basename($this) . '_log');
     }
 }
