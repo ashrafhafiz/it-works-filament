@@ -2,17 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ManufacturerResource\Pages;
-use App\Filament\Resources\ManufacturerResource\RelationManagers;
-use App\Models\Department;
-use App\Models\Manufacturer;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\Department;
 use Filament\Tables\Table;
+use App\Models\Manufacturer;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\ManufacturerResource\Pages;
+use App\Filament\Resources\ManufacturerResource\RelationManagers;
 
 class ManufacturerResource extends Resource
 {
@@ -57,22 +57,22 @@ class ManufacturerResource extends Resource
                         Forms\Components\Group::make([
                             Forms\Components\Placeholder::make('created_at')
                                 ->label('Created at')
-                                ->content(fn (Manufacturer $manufacturer): ?string => $manufacturer->created_at?->diffForHumans())
-                                ->hidden(fn (?Manufacturer $manufacturer): ?string => $manufacturer->id === null),
+                                ->content(fn(Manufacturer $manufacturer): ?string => $manufacturer->created_at?->diffForHumans())
+                                ->hidden(fn(?Manufacturer $manufacturer): ?string => $manufacturer->id === null),
                             Forms\Components\Placeholder::make('updated_at')
                                 ->label('Last Updated')
-                                ->content(fn (Manufacturer $manufacturer): ?string => $manufacturer->updated_at?->diffForHumans())
-                                ->hidden(fn (?Manufacturer $manufacturer): ?string => $manufacturer->id === null),
+                                ->content(fn(Manufacturer $manufacturer): ?string => $manufacturer->updated_at?->diffForHumans())
+                                ->hidden(fn(?Manufacturer $manufacturer): ?string => $manufacturer->id === null),
                         ])->columns(2),
                         Forms\Components\Group::make([
                             Forms\Components\Placeholder::make('created_by')
                                 ->label('Created by:')
-                                ->content(fn (Manufacturer $manufacturer): ?string => $manufacturer->created_by)
-                                ->hidden(fn (?Manufacturer $manufacturer): ?string => $manufacturer->id === null),
+                                ->content(fn(Manufacturer $manufacturer): ?string => $manufacturer->created_by)
+                                ->hidden(fn(?Manufacturer $manufacturer): ?string => $manufacturer->id === null),
                             Forms\Components\Placeholder::make('updated_by')
                                 ->label('Updated by:')
-                                ->content(fn (Manufacturer $manufacturer): ?string => $manufacturer->updated_by)
-                                ->hidden(fn (?Manufacturer $manufacturer): ?string => $manufacturer->id === null),
+                                ->content(fn(Manufacturer $manufacturer): ?string => $manufacturer->updated_by)
+                                ->hidden(fn(?Manufacturer $manufacturer): ?string => $manufacturer->id === null),
                         ])->columns(2),
                     ])->columnSpan(1),
             ])->columns(3);

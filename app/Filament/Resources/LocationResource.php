@@ -2,16 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\LocationResource\Pages;
-use App\Filament\Resources\LocationResource\RelationManagers;
-use App\Models\Location;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Location;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\LocationResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\LocationResource\RelationManagers;
 
 class LocationResource extends Resource
 {
@@ -63,23 +63,23 @@ class LocationResource extends Resource
                         Forms\Components\Group::make([
                             Forms\Components\Placeholder::make('created_at')
                                 ->label('Created at')
-                                ->content(fn (Location $location): ?string => $location->created_at?->diffForHumans())
-                                ->hidden(fn (?Location $location): ?string => $location->id === null),
+                                ->content(fn(Location $location): ?string => $location->created_at?->diffForHumans())
+                                ->hidden(fn(?Location $location): ?string => $location->id === null),
                             Forms\Components\Placeholder::make('updated_at')
                                 ->label('Last Updated')
-                                ->content(fn (Location $location): ?string => $location->updated_at?->diffForHumans())
-                                ->hidden(fn (?Location $location): ?string => $location->id === null),
+                                ->content(fn(Location $location): ?string => $location->updated_at?->diffForHumans())
+                                ->hidden(fn(?Location $location): ?string => $location->id === null),
 
                         ])->columns(2),
                         Forms\Components\Group::make([
                             Forms\Components\Placeholder::make('created_by')
                                 ->label('Created by:')
-                                ->content(fn (Location $location): ?string => $location->created_by)
-                                ->hidden(fn (?Location $location): ?string => $location->id === null),
+                                ->content(fn(Location $location): ?string => $location->created_by)
+                                ->hidden(fn(?Location $location): ?string => $location->id === null),
                             Forms\Components\Placeholder::make('updated_by')
                                 ->label('Updated by:')
-                                ->content(fn (Location $location): ?string => $location->updated_by)
-                                ->hidden(fn (?Location $location): ?string => $location->id === null),
+                                ->content(fn(Location $location): ?string => $location->updated_by)
+                                ->hidden(fn(?Location $location): ?string => $location->id === null),
 
                         ])->columns(2),
                     ])->columnSpan(1),
